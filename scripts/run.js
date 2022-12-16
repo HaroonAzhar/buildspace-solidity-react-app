@@ -1,7 +1,11 @@
 const main = async () => {
+  //compile into a local  Ethereum network(like blockchain)
   const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
+  //submit our contract to the local Ethereum network
   const waveContract = await waveContractFactory.deploy();
+  //excute the contract on the network
   await waveContract.deployed();
+  //log out our action happening, just so we know it happened
   console.log("Contract deployed to:", waveContract.address);
 };
 
