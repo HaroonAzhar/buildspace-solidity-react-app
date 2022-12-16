@@ -1,12 +1,23 @@
 const main = async () => {
-  //compile into a local  Ethereum network(like blockchain)
+  const [owner, randomPerson] = await hre.ethers.getSigners();
   const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
-  //submit our contract to the local Ethereum network
   const waveContract = await waveContractFactory.deploy();
-  //excute the contract on the network
   await waveContract.deployed();
-  //log out our action happening, just so we know it happened
+
   console.log("Contract deployed to:", waveContract.address);
+  console.log("Contract deployed by:", owner.address);
+
+  await waveContract.getTotalWaves();
+
+  const firstWaveTxn = await waveContract.wave();
+  await firstWaveTxn.wait();
+
+  await waveContract.getTotalWaves();
+
+  const secondWaveTxn = await waveContract.connect(randomPerson).wave();
+  await secondWaveTxn.wait();
+
+  await waveContract.getTotalWaves();
 };
 
 const runMain = async () => {
